@@ -1,16 +1,32 @@
 # tkinter importieren für die grafische Benutzeroberfläche
 import tkinter as tk
-
+expression = ""
 def on_button_click(value):
-    """Callback-Funktion, die bei jedem Tastendruck aufgerufen wird.
-    Erhält den Wert des gedrückten Buttons als Parameter."""
-    # TODO: Implement functionality
-    pass
+    global expression
+
+    if value == "C":
+        display.delete(0, tk.END)  # löscht alles
+        expression = ""
+        return
+
+    if value == "=":
+        try:
+            result = str(eval(expression))
+            display.delete(0, tk.END)
+            display.insert(0, result)
+            expression = result
+        except Exception:
+            display.delete(0, tk.END)
+            display.insert(0, "Fehler")
+            expression = ""
+        return
+
+    expression += value
+    display.insert(tk.END, value) 
 
 # Hauptfenster erstellen und Titel setzen
 root = tk.Tk()
 root.title("Einfacher Taschenrechner")
-
 # Eingabefeld (Display) oben im Fenster anlegen
 # Erstreckt sich über alle 4 Spalten (columnspan=4)
 display = tk.Entry(root, width=30, borderwidth=5, justify="right")
@@ -32,7 +48,7 @@ col = 0
 for button in buttons:
     # Lambda mit Default-Argument, damit jeder Button seinen eigenen Wert behält
     action = lambda x=button: on_button_click(x)
-    tk.Button(root, text=button, width=5, height=2, command=action)        .grid(row=row, column=col, padx=5, pady=5)
+    tk.Button(root, text=button, width=5, height=2, command=action).grid(row=row, column=col, padx=5, pady=5)
 
     # Zur nächsten Spalte wechseln; nach 4 Spalten neue Zeile beginnen
     col += 1
