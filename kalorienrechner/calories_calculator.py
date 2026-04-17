@@ -70,6 +70,8 @@ class MealTracker:
         self.meals = []
 
     def add_meal(self, name, calories):
+        meal = {"name": name, "calories": calories}
+        self.meals.append(meal)
         """
         Add a meal to the tracker.
 
@@ -94,6 +96,10 @@ class MealTracker:
 
 
     def get_total_calories(self):
+        total = 0         
+        for meal in self.meals:          
+            total += meal["calories"]          
+            return total
         """
         Calculate and return the total calories of all meals.
 
@@ -123,6 +129,10 @@ class MealTracker:
 
 
     def get_meals_summary(self):
+        summary = []
+        for meal in self.meals:
+         summary.append(f"{meal['name']} - {meal['calories']} kcal")
+         return summary
         """
         Return a list of formatted strings, one per meal.
 
@@ -156,6 +166,7 @@ class MealTracker:
 
 
     def reset_day(self):
+        self.meals.clear()
         """
         Remove all meals from the tracker (start a new day).
 
